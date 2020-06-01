@@ -1,0 +1,55 @@
+# template
+# - version: 1.0
+#   # important
+#   crutches:     [] # post factum indication
+#   fixes:        []
+#   deprecations: []
+#   improvements: []
+#
+#   # news
+#   modules:         []
+#   definitions:     []
+#   classes:         []
+#   class-functions: []
+#   types:           []
+#   type-families:   []
+#   exceptions:      []
+#   syntax:          []
+#   tests:           []
+#   benchmarks:      []
+#
+#   # changes
+#   moved:        []
+#   changes:      []
+#   superclasses: []
+#   removed:      []
+
+---
+
+- version: 2.0
+  # news
+  modules:
+
+    - Test.SDP.Arbitrary: Arbitrary instances for SDP structures
+    - Test.SDP.Estimate: Estimate default tests
+    - Test.SDP.Indexed: Indexed default tests
+    - Test.SDP.Linear: Linear default tests
+    - Test.SDP.Sort: Sort default tests
+    - Test.SDP.Set: Set default tests
+    - Test.SDP.Gen: Arbitrary newtypes for Linear tests
+    - Test.SDP.Ord: Ord default tests
+    - Test.SDP.Eq: Eq default tests
+    - Test.SDP: |
+        reexport of all Test.SDP.* modules, except Arbitrary, Index and Gen
+
+  tests:
+    - Suite: Eq, Ord and Estimate
+
+    - Index: test-indices
+
+    - Array: test-array
+    - Bytes: test-bytes
+    - Unlist: test-unlist
+    - Ublist: test-ublist
+    - Unrolled: test-unrolled
+    - ByteList: test-bytelist
