@@ -27,9 +27,9 @@ main = do
   
   defaultMain
     [
-      bench "benchsort-tim-array   " $ sort `whnf` array,
-      bench "benchsort-tim-bytes   " $ sort `whnf` bytes,
-      bench "benchsort-tim-unrolled" $ sort `whnf` unrolled,
-      bench "benchsort-tim-bytelist" $ sort `whnf` bytelist
+      bench "bench-timsort-array   " $ sort `whnf` array,
+      bench "bench-timsort-bytes   " $ sort `whnf` bytes,
+      bench "bench-timsort-unrolled" $ sort `whnf` unrolled,
+      bench "bench-timsort-bytelist" $ sort `whnf` bytelist
     ]
 
