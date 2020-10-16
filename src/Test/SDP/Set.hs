@@ -28,7 +28,7 @@ where
 
 import Prelude ()
 import SDP.SafePrelude
-
+import SDP.Linear
 import SDP.Set
 
 default ()
@@ -46,7 +46,7 @@ type TestSet1 s o = o -> s o -> s o -> Bool
   Note that basicSetTest requires any @('Set' s o) => s@, not necessarily a set
   (may contain any data).
 -}
-basicSetTest :: (Set s o, Ord s, Ord o) => s -> Bool
+basicSetTest :: (Set s o, Nullable s, Eq s, Ord o) => s -> Bool
 basicSetTest sx = and
     [
       isNull sx == isNull sx',
@@ -65,8 +65,8 @@ basicSetTest sx = and
 insdelSetTest :: (Set s o, Eq s, Ord o) => o -> s -> Bool
 insdelSetTest e sx' = and
   [
-    (insert e sx' == sx') || not (e `isSetElem` sx'),
-    (delete e sx' == sx') ||     (e `isSetElem` sx')
+    (insert e sx' == sx') || not (member e sx'),
+    (delete e sx' == sx') ||     (member e sx')
   ]
 
 {- |
@@ -74,7 +74,7 @@ insdelSetTest e sx' = and
   Note that unintSetTest requires any @('Set' s o) => s@, not necessarily a set
   (may contain any data).
 -}
-unintSetTest :: (Set s o, Ord o) => s -> s -> Bool
+unintSetTest :: (Set s o, Linear s o, Ord o) => s -> s -> Bool
 unintSetTest sx' sy' = and
     [
       (is `isSubseqOf` sx') && (is  `isSubseqOf` sy') && (is `isSubseqOf` un),
@@ -88,7 +88,7 @@ unintSetTest sx' sy' = and
   'diffSetTest' checks laws of difference ('\\') and symmetric difference
   ('\^/'). Note that diffSetTest requires a set, not any @('Set' s o) => s@
 -}
-diffSetTest :: (Set s o, Ord o) => s -> s -> Bool
+diffSetTest :: (Set s o, Linear s o, Ord o) => s -> s -> Bool
 diffSetTest sx' sy' = and
     [
       (cp `isSubseqOf` sx') && (isNull cp || not (cp `isSubseqOf` sy')) && (cp `isSubseqOf` un),
@@ -101,24 +101,24 @@ diffSetTest sx' sy' = and
     sd = sx' \^/ sy'
 
 {- |
-  'elemSetTest' checks relations of 'isSetElem' and 'isSubseqOf'.
+  'elemSetTest' checks relations of 'member' and 'isSubseqOf'.
   Note that elemSetTest requires any @('Set' s o) => s@, not necessarily a set
   (may contain any data).
 -}
-elemSetTest :: (Set s o, Ord o) => o -> s -> Bool
+elemSetTest :: (Set s o, Linear s o, Ord o) => o -> s -> Bool
 elemSetTest e sx = and
     [
-      (e' `isSubseqOf` sx) == (e `isSetElem` sx'),
-      (e' `isSubseqOf` sx) == (e `isSetElem` sx')
+      (e' `isSubseqOf` sx) == member e sx',
+      (e' `isSubseqOf` sx) == member e sx'
     ]
   where
     sx' = set sx; e' = single e
 
 {- |
   'lookupSetTest' checks relations of 'lookupLT', 'lookupGT', 'lookupLE' and
-  'lookupGE'. Note that lookupSetTest requires a set, not any @('Set' s o) => s@
+  'lookupGE'. Note that lookupSetTest requires a set, not any @('Set' s o) => s@.
 -}
-lookupSetTest :: (Set s o, Ord o) => o -> s -> Bool
+lookupSetTest :: (Set s o, Linear s o, Ord o) => o -> s -> Bool
 lookupSetTest e sx = and
     [
       lookupLT e sx == lookupLT e (listL sx),
@@ -137,15 +137,15 @@ lookupSetTest e sx = and
   Note that setTest requires any @('Set' s o) => s@, not necessarily a set (may
   contain any data).
 -}
-setTest :: (Ord o, Ord s, Set s o) => o -> s -> s -> Bool
+setTest :: (Set s o, Linear s o, Ord s, Ord o) => o -> s -> s -> Bool
 setTest e xs ys = and
     [
-      basicSetTest xs,
-      insdelSetTest e sx,
-      unintSetTest sx sy,
-      diffSetTest sx sy,
-      elemSetTest e xs,
-      lookupSetTest e sx
+      unintSetTest  sx sy,
+      diffSetTest   sx sy,
+      basicSetTest     xs,
+      insdelSetTest e  sx,
+      lookupSetTest e  sx,
+      elemSetTest   e  xs
     ]
   where
     sx = set xs
