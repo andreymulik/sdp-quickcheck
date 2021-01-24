@@ -19,7 +19,6 @@ where
 
 import Prelude ()
 import SDP.SafePrelude hiding ( eq1 )
-
 import SDP.Linear
 
 default ()
@@ -29,8 +28,8 @@ default ()
 -- | TestEstimate is service type synonym for more comfortable quickCheck using.
 type TestEstimate e = Int -> e -> e -> Bool
 
--- | estimateTest is basic test suite for 'Estimate' instances.
-estimateTest :: (Estimate b, Bordered b i) => Int -> b -> b -> Bool
+-- | 'estimateTest' is basic test suite for 'Estimate' instances.
+estimateTest :: (Bordered b i) => Int -> b -> b -> Bool
 estimateTest n xs ys = and
   [
     -- by definition
@@ -41,16 +40,14 @@ estimateTest n xs ys = and
     (xs <.=> n) == (sx <=> n),
     
     case xs <.=> n of
-      LT -> xs .< n && n >. xs
       EQ -> xs .== n && not (xs ./= n)
-      GT -> xs .> n && n <. xs
-    ,
+      LT -> xs .< n && n >. xs
+      GT -> xs .> n && n <. xs,
     
     case cmp of
       LT -> lt1 && ys .>. xs
-      EQ -> eq1 && not ne1
       GT -> gt1 && ys .<. xs
-    ,
+      EQ -> eq1 && not ne1,
     
     not (xs .>. xs), (xs .>=. xs),
     not (xs .<. xs), (xs .<=. xs),
@@ -75,6 +72,9 @@ estimateTest n xs ys = and
     gt1 = xs .>.  ys; lt1 = xs .<.  ys
     ge1 = xs .>=. ys; le1 = xs .<=. ys
     eq1 = xs .==. ys; ne1 = xs ./=. ys
+    cmp = xs <==> ys
     
-    cmp = xs <==> ys; sx = sizeOf xs; sy = sizeOf ys
+    sx = sizeOf xs
+    sy = sizeOf ys
+
 

@@ -15,7 +15,7 @@ module Test.SDP.Arbitrary
   -- * Exports
   module Test.QuickCheck,
   
-  SArray#, SBytes#, AnyBorder, AnyChunks
+  SArray#, SBytes#, AnyBorder (..), AnyChunks (..)
 )
 where
 

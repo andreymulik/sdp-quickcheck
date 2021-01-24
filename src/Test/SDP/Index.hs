@@ -1,4 +1,4 @@
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE TypeOperators, FlexibleContexts #-}
 
 {- |
     Module      :  Test.SDP.Index
@@ -11,13 +11,13 @@
 -}
 module Test.SDP.Index
 (
-  -- * Test type synonym
-  TestIndex,
+  -- * Default Shape test
+  TestShape, shapeTest,
   
-  -- * Default test
-  indexTest,
+  -- * Default Index test
+  TestIndex, indexTest,
   
-  -- * Particular tests
+  -- ** Particular tests
   basicIndexTest,
   inBoundsTest,
   rangeTest,
@@ -34,11 +34,32 @@ default ()
 
 --------------------------------------------------------------------------------
 
+-- | 'TestShape' is service type synonym for more comfortable quickCheck using.
+type TestShape s = s -> Bool
+
+{- |
+  @'shapeTest' r sh@ is default 'Shape' test, where @r@ is expected rank for
+  this shape type. Note that 'shapeTest' also checks @'rank' 'undefined'@ case,
+  to make sure 'rank' is correct.
+-}
+shapeTest :: (Shape s, Eq s, Eq (DimInit s), Eq (DimLast s)) => Int -> s -> Bool
+shapeTest r sh' = let (s, sh) = unconsDim sh' in and
+  [
+    r == rank (undefined `asTypeOf` sh'),
+    r == rank sh',
+    
+    consDim s sh == sh',
+    lastDim sh' == sh,
+    initDim sh' == s
+  ]
+
+--------------------------------------------------------------------------------
+
 -- | TestIndex is service type synonym for more comfortable quickCheck using.
 type TestIndex i = (i, i) -> i -> Bool
 
 lim :: Int
-lim = 65536
+lim =  65536
 
 {- |
   'rangeTest' checks relations of 'inRange', 'isOverflow', 'isUnderflow' and
@@ -47,37 +68,37 @@ lim = 65536
 rangeTest :: (Index i) => (i, i) -> i -> Bool
 rangeTest bnds i = and
   [
-    not $ inRange bnds i && isOverflow  bnds i,
-    not $ inRange bnds i && isUnderflow bnds i,
-    not $ inRange bnds i && isEmpty     bnds,
+    not (inRange bnds i && isUnderflow bnds i),
+    not (inRange bnds i && isOverflow  bnds i),
+    not (inRange bnds i && isEmpty     bnds),
     
-    not (isEmpty  bnds)  || isOverflow  bnds i,
-    not (isEmpty  bnds)  || isUnderflow bnds i
+    not (isEmpty bnds)  || isOverflow  bnds i,
+    not (isEmpty bnds)  || isUnderflow bnds i
   ]
 
 -- | 'prevTest' checks relations of 'prev' and 'range'.
 prevTest :: (Index i) => (i, i) -> Bool
-prevTest bnds = isEmpty bnds || and test
-  where
-    test = take lim $ zipWith (==) (range bnds) (tail $ prev bnds <$> range bnds)
+prevTest bnds =
+  let test = take lim $ zipWith (==) (range bnds) (tail $ prev bnds <$> range bnds)
+  in  isEmpty bnds || and test
 
 -- | 'nextTest' checks relations of 'next' and 'range'.
 nextTest :: (Index i) => (i, i) -> Bool
-nextTest bnds = isEmpty bnds || and test
-  where
-    test = take lim $ zipWith (==) (range bnds) (tail $ prev bnds <$> range bnds)
+nextTest bnds =
+  let test = take lim $ zipWith (==) (range bnds) (tail $ prev bnds <$> range bnds)
+  in  isEmpty bnds || and test
 
 -- | 'inBoundsTest' checks relations of 'inBounds' and other range functions.
 inBoundsTest :: (Index i) => (i, i) -> i -> Bool
 inBoundsTest bnds i = case inBounds bnds i of
   ER -> isEmpty     bnds
-  UR -> isUnderflow bnds i
   IN -> inRange     bnds i
   OR -> isOverflow  bnds i
+  UR -> isUnderflow bnds i
 
 {- |
-  'dumbSizeTest' is O(n) (very long) test, that checks relation of range 'size'
-  and 'range' length.
+  'dumbSizeTest' is O(n) (may be very long) test, that checks relation of range
+  'size' and 'range' length.
 -}
 dumbSizeTest :: (Index i) => (i, i) -> Bool
 dumbSizeTest bnds = length (range bnds) == size bnds
@@ -104,12 +125,11 @@ indexTest :: (Index i) => (i, i) -> i -> Bool
 indexTest bnds i = and
   [
     basicIndexTest bnds i,
-    
-    inBoundsTest bnds i,
-    
-    rangeTest bnds i,
-    
-    prevTest bnds, nextTest bnds
+    inBoundsTest   bnds i,
+    rangeTest      bnds i,
+    prevTest       bnds,
+    nextTest       bnds
   ]
+
 
 

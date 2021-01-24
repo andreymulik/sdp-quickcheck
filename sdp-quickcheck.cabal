@@ -30,7 +30,6 @@ source-repository head
 Library
   default-language: Haskell2010
   hs-source-dirs:   src
-  
   build-depends:
     base       >= 4.12 && < 5,
     sdp        >= 0.2  && < 0.3,
@@ -43,6 +42,8 @@ Library
     Test.SDP.Estimate
     Test.SDP.Indexed
     Test.SDP.Linear
+    Test.SDP.Split
+    Test.SDP.Index
     Test.SDP.Sort
     Test.SDP.Set
     Test.SDP.Gen
@@ -60,15 +61,15 @@ Library
 test-suite test-indices
   default-language: Haskell2010
   hs-source-dirs:   test, src
-  
-  type:             exitcode-stdio-1.0
   main-is:          test-indices.hs
+  type:             exitcode-stdio-1.0
   
   other-modules:
     Test.SDP.Arbitrary
     Test.SDP.Estimate
     Test.SDP.Indexed
     Test.SDP.Linear
+    Test.SDP.Split
     Test.SDP.Index
     Test.SDP.Sort
     Test.SDP.Set
@@ -89,15 +90,15 @@ test-suite test-indices
 test-suite test-array
   default-language: Haskell2010
   hs-source-dirs:   test, src
-  
-  type:             exitcode-stdio-1.0
   main-is:          test-array.hs
+  type:             exitcode-stdio-1.0
   
   other-modules:
     Test.SDP.Arbitrary
     Test.SDP.Estimate
     Test.SDP.Indexed
     Test.SDP.Linear
+    Test.SDP.Split
     Test.SDP.Sort
     Test.SDP.Set
     Test.SDP.Gen
@@ -117,15 +118,15 @@ test-suite test-array
 test-suite test-bytes
   default-language: Haskell2010
   hs-source-dirs:   test, src
-  
-  type:             exitcode-stdio-1.0
   main-is:          test-bytes.hs
+  type:             exitcode-stdio-1.0
   
   other-modules:
     Test.SDP.Arbitrary
     Test.SDP.Estimate
     Test.SDP.Indexed
     Test.SDP.Linear
+    Test.SDP.Split
     Test.SDP.Sort
     Test.SDP.Set
     Test.SDP.Gen
@@ -145,15 +146,15 @@ test-suite test-bytes
 test-suite test-unrolled
   default-language: Haskell2010
   hs-source-dirs:   test, src
-  
-  type:             exitcode-stdio-1.0
   main-is:          test-unrolled.hs
+  type:             exitcode-stdio-1.0
   
   other-modules:
     Test.SDP.Arbitrary
     Test.SDP.Estimate
     Test.SDP.Indexed
     Test.SDP.Linear
+    Test.SDP.Split
     Test.SDP.Sort
     Test.SDP.Set
     Test.SDP.Gen
@@ -173,15 +174,15 @@ test-suite test-unrolled
 test-suite test-bytelist
   default-language: Haskell2010
   hs-source-dirs:   test, src
-  
-  type:             exitcode-stdio-1.0
   main-is:          test-bytelist.hs
+  type:             exitcode-stdio-1.0
   
   other-modules:
     Test.SDP.Arbitrary
     Test.SDP.Estimate
     Test.SDP.Indexed
     Test.SDP.Linear
+    Test.SDP.Split
     Test.SDP.Sort
     Test.SDP.Set
     Test.SDP.Gen
@@ -201,15 +202,15 @@ test-suite test-bytelist
 test-suite test-ublist
   default-language: Haskell2010
   hs-source-dirs:   test, src
-  
-  type:             exitcode-stdio-1.0
   main-is:          test-ublist.hs
+  type:             exitcode-stdio-1.0
   
   other-modules:
     Test.SDP.Arbitrary
     Test.SDP.Estimate
     Test.SDP.Indexed
     Test.SDP.Linear
+    Test.SDP.Split
     Test.SDP.Sort
     Test.SDP.Set
     Test.SDP.Gen
@@ -229,15 +230,15 @@ test-suite test-ublist
 test-suite test-unlist
   default-language: Haskell2010
   hs-source-dirs:   test, src
-  
-  type:             exitcode-stdio-1.0
   main-is:          test-unlist.hs
+  type:             exitcode-stdio-1.0
   
   other-modules:
     Test.SDP.Arbitrary
     Test.SDP.Estimate
     Test.SDP.Indexed
     Test.SDP.Linear
+    Test.SDP.Split
     Test.SDP.Sort
     Test.SDP.Set
     Test.SDP.Gen
@@ -264,15 +265,15 @@ test-suite test-unlist
 benchmark bench-sort
   default-language: Haskell2010
   hs-source-dirs:   bench, src
-  
-  type:             exitcode-stdio-1.0
   main-is:          bench-sort.hs
+  type:             exitcode-stdio-1.0
   
   other-modules:
     Test.SDP.Arbitrary
     Test.SDP.Estimate
     Test.SDP.Indexed
     Test.SDP.Linear
+    Test.SDP.Split
     Test.SDP.Sort
     Test.SDP.Set
     Test.SDP.Gen
@@ -291,7 +292,6 @@ benchmark bench-sort
 benchmark bench-sort-io
   default-language: Haskell2010
   hs-source-dirs:   bench, src
-  
   ghc-options:      -O2 -Wall -Wno-orphans
   main-is:          bench-sort-io.hs
   type:             exitcode-stdio-1.0

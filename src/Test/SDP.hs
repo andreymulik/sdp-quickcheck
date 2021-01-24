@@ -13,6 +13,7 @@ module Test.SDP
     module Test.SDP.Estimate,
     module Test.SDP.Indexed,
     module Test.SDP.Linear,
+    module Test.SDP.Split,
     module Test.SDP.Sort,
     module Test.SDP.Set,
     module Test.SDP.Ord,
@@ -20,11 +21,10 @@ module Test.SDP
   )
 where
 
-import Prelude ()
-
 import Test.SDP.Estimate
 import Test.SDP.Indexed
 import Test.SDP.Linear
+import Test.SDP.Split
 import Test.SDP.Sort
 import Test.SDP.Set
 import Test.SDP.Ord

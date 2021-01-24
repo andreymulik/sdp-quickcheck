@@ -9,48 +9,34 @@
 -}
 module Test.SDP.Linear
 (
-  -- * Linear test type synonyms
-  TestLinear2,
-  TestLinear1,
-  TestLinear,
+  -- * Default Linear test
+  TestLinear, TestLinear1, TestLinear2, linearTest,
   
-  -- * Linear default test
-  linearTest,
-  
-  -- * Linear particular tests
+  -- ** Particular tests
   deconstructionLinearTest,
   constructionLinearTest,
   basicLinearTest,
   replicateTest,
   reverseTest,
-  concatTest,
-  
-  -- * Split test type synonyms
-  TestSplit2,
-  TestSplit1,
-  TestSplit,
-  
-  -- * Split default test
-  splitTest
+  concatTest
 )
 where
 
 import Prelude ()
 import SDP.SafePrelude
-
 import SDP.Linear
 
 default ()
 
 --------------------------------------------------------------------------------
 
--- | TestLinear  is service type synonym for more comfortable quickCheck using.
+-- | 'TestLinear' is service type synonym for more comfortable quickCheck using.
 type TestLinear  l e = Int -> e -> l -> Bool
 
--- | TestLinear1 is service type synonym for more comfortable quickCheck using.
+-- | 'TestLinear1' is service type synonym for more comfortable quickCheck using.
 type TestLinear1 f e = Int -> e -> f e -> Bool
 
--- | TestLinear2 is service type synonym for more comfortable quickCheck using.
+-- | 'TestLinear2' is service type synonym for more comfortable quickCheck using.
 type TestLinear2 f i e = Int -> e -> f i e -> Bool
 
 {- |
@@ -141,25 +127,4 @@ linearTest n e line = and
     concatTest line
   ]
 
--- | TestSplit  is service type synonym for more comfortable quickCheck using.
-type TestSplit  s = Int -> s -> Bool
-
--- | TestSplit1 is service type synonym for more comfortable quickCheck using.
-type TestSplit1 s e = Int -> s e -> Bool
-
--- | TestSplit2 is service type synonym for more comfortable quickCheck using.
-type TestSplit2 s i e = Int -> s i e -> Bool
-
--- | 'splitTest' is pure, basic test of 'take', 'drop' and 'split' relations.
-splitTest :: (Split s e, Eq e, Eq s, Bordered s i) => Int -> s -> Bool
-splitTest n line = and
-  [
-    isNull $ take (- max 0 n)   line,
-    isNull $ drop (sizeOf line) line,
-    
-    listL (take n line) == take n (listL line),
-    listL (drop n line) == drop n (listL line),
-    
-    (take n line, drop n line) == split n line
-  ]
 

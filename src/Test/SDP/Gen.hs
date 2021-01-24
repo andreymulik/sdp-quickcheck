@@ -15,16 +15,15 @@ module Test.SDP.Gen
   Short (..), Medium (..), Long (..),
   
   -- * Related functions.
-  linearA
+  linearA, orderA
 )
 where
 
 import Prelude ()
 import SDP.SafePrelude
+import SDP.Linear
 
 import Test.QuickCheck
-
-import SDP.Linear
 
 default ()
 
@@ -78,8 +77,19 @@ instance (Linear l e, Arbitrary e) => Arbitrary (Long l)
 
 --------------------------------------------------------------------------------
 
--- | linearA is overloaded 'vector'.
+-- | 'linearA' is overloaded 'vector'.
 linearA :: (Linear l e, Arbitrary e) => Int -> Gen l
 linearA =  fmap fromList . vector
+
+{- |
+  'orderA' returns a simple comparator that can be used to test the behavior of
+  higher-order functions (for example, when comparing the results of @takeWhile@
+  for different structures).
+-}
+orderA :: (Ord e) => Gen (e -> e -> Bool)
+orderA =  elements [(>), (<), (>=), (<=), (==), (/=)]
+
+
+
 
 

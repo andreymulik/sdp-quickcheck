@@ -26,7 +26,6 @@ where
 
 import Prelude ()
 import SDP.SafePrelude
-
 import SDP.Indexed
 
 import Data.Maybe
@@ -46,9 +45,7 @@ type TestIndexed2 l i e = i -> l i e -> Bool
 
 -- | 'basicIndexedTest' checks relations of 'isNull', 'safeElem' and 'inRange'.
 basicIndexedTest :: (Bordered l i, Indexed l i e) => i -> l -> Bool
-basicIndexedTest i es = isNull es || inRange bnds (safeElem bnds i)
-  where
-    bnds = bounds es
+basicIndexedTest i es = let bnds = bounds es in isNull es || inRange bnds (safeElem bnds i)
 
 {- |
   'assocIndexedTest' checks relations of 'assoc', 'assocs', ('.$'), ('*$') and
@@ -65,7 +62,7 @@ assocIndexedTest i es = and
     
     -- if structure contain dublicates, (.$) may find earlier match.
     isNull es || i' >= fromJust ((== es ! i') .$ es),
-    isNull es || elem i' ((== es ! (safeElem bnds i)) *$ es)
+    isNull es || elem i' ((== es!safeElem bnds i) *$ es)
   ]
   where
     i'   = safeElem bnds i
@@ -77,7 +74,6 @@ readIndexedTest i es = and
     [
       -- just check (.!) on all range
       fmap (es .!) (indices es) == listL es,
-      
       isNull es || (es ! i' == es .! i'),
       
       inRange bnds i || isNothing (es !? i),
@@ -95,6 +91,5 @@ indexedTest i es = and
     assocIndexedTest i es,
     readIndexedTest  i es
   ]
-
 
 
