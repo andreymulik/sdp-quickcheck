@@ -19,11 +19,9 @@ where
 
 import Prelude ()
 import SDP.SafePrelude
+import SDP.Linear
 
 import Test.SDP.Gen
-
-import SDP.Linear
-import SDP.Sort
 
 default ()
 
@@ -37,4 +35,6 @@ default ()
 -}
 sortTest :: (Sort s e, Split s e, Bordered s i, Ord e) => Medium s -> Bool
 sortTest (Medium es) =  sorted (sort es)
+
+
 
