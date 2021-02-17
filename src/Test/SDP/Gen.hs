@@ -1,4 +1,5 @@
-{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, UndecidableInstances #-}
+{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, FlexibleContexts #-}
+{-# LANGUAGE UndecidableInstances #-}
 
 {- |
     Module      :  Test.SDP.Gen
@@ -14,8 +15,8 @@ module Test.SDP.Gen
   -- * Common newtypes for QuickCheck.
   Short (..), Medium (..), Long (..),
   
-  -- * Related functions.
-  linearA, orderA
+  -- ** Related functions.
+  linearLargeA, linearA, orderA
 )
 where
 
@@ -24,6 +25,8 @@ import SDP.SafePrelude
 import SDP.Linear
 
 import Test.QuickCheck
+
+import Data.Coerce
 
 default ()
 
@@ -81,6 +84,12 @@ instance (Linear l e, Arbitrary e) => Arbitrary (Long l)
 linearA :: (Linear l e, Arbitrary e) => Int -> Gen l
 linearA =  fmap fromList . vector
 
+-- | 'linearLargeA' is version of 'linearA', which generates 'Large' 'Int's.
+linearLargeA :: (Linear l Int) => Int -> Gen l
+linearLargeA =
+  let fromLarge = coerce :: [Large Int] -> [Int]
+  in  fmap (fromList . fromLarge) . vector
+
 {- |
   'orderA' returns a simple comparator that can be used to test the behavior of
   higher-order functions (for example, when comparing the results of @takeWhile@
@@ -88,8 +97,4 @@ linearA =  fmap fromList . vector
 -}
 orderA :: (Ord e) => Gen (e -> e -> Bool)
 orderA =  elements [(>), (<), (>=), (<=), (==), (/=)]
-
-
-
-
 
