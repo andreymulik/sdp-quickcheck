@@ -7,15 +7,15 @@
     License     :  BSD-style
     Maintainer  :  work.a.mulik@gmail.com
     Portability :  non-portable (requires non-portable modules)
-  
-  @Test.SDP.Gen@ provides newtypes for QuickCheck.
+    
+    @Test.SDP.Gen@ provides newtypes for QuickCheck.
 -}
 module Test.SDP.Gen
 (
-  -- * Common newtypes for QuickCheck.
+  -- * Common newtypes for QuickCheck
   Short (..), Medium (..), Long (..),
   
-  -- ** Related functions.
+  -- ** Related functions
   linearLargeA, linearA, orderA
 )
 where

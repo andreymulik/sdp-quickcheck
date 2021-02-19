@@ -6,7 +6,7 @@ synopsis:      SDP QuickCheck support
 description:   Arbitrary instances for SDP structures
 
 author:        Andrey Mulik
-maintainer:    work.a.mulik@gmail.com
+maintainer:    <work.a.mulik@gmail.com>
 bug-reports:   https://github.com/andreymulik/sdp-quickcheck/issues
 
 copyright:     2020 Andrey Mulik
@@ -35,7 +35,7 @@ Library
     sdp         >= 0.2  && < 0.3,
     QuickCheck  >= 2.12 && < 3
   
-  ghc-options: -O2 -Wall -Wno-orphans
+  ghc-options: -Wall -Wno-orphans
   
   exposed-modules:
     Test.SDP.Arbitrary
@@ -85,7 +85,7 @@ test-suite test-indices
     test-framework             >= 0.8  && < 0.9,
     test-framework-quickcheck2 >= 0.3  && < 0.4
   
-  ghc-options: -O2 -Wall -Wno-orphans
+  ghc-options: -Wall -Wno-orphans
 
 test-suite test-array
   default-language: Haskell2010
@@ -113,7 +113,7 @@ test-suite test-array
     test-framework             >= 0.8  && < 0.9,
     test-framework-quickcheck2 >= 0.3  && < 0.4
   
-  ghc-options: -O2 -Wall -Wno-orphans
+  ghc-options: -Wall -Wno-orphans
 
 test-suite test-bytes
   default-language: Haskell2010
@@ -141,7 +141,7 @@ test-suite test-bytes
     test-framework             >= 0.8  && < 0.9,
     test-framework-quickcheck2 >= 0.3  && < 0.4
   
-  ghc-options: -O2 -Wall -Wno-orphans
+  ghc-options: -Wall -Wno-orphans
 
 test-suite test-unrolled
   default-language: Haskell2010
@@ -169,7 +169,7 @@ test-suite test-unrolled
     test-framework             >= 0.8  && < 0.9,
     test-framework-quickcheck2 >= 0.3  && < 0.4
   
-  ghc-options: -O2 -Wall -Wno-orphans
+  ghc-options: -Wall -Wno-orphans
 
 test-suite test-bytelist
   default-language: Haskell2010
@@ -197,7 +197,7 @@ test-suite test-bytelist
     test-framework             >= 0.8  && < 0.9,
     test-framework-quickcheck2 >= 0.3  && < 0.4
   
-  ghc-options: -O2 -Wall -Wno-orphans
+  ghc-options: -Wall -Wno-orphans
 
 test-suite test-ublist
   default-language: Haskell2010
@@ -225,7 +225,7 @@ test-suite test-ublist
     test-framework             >= 0.8  && < 0.9,
     test-framework-quickcheck2 >= 0.3  && < 0.4
   
-  ghc-options: -O2 -Wall -Wno-orphans
+  ghc-options: -Wall -Wno-orphans
 
 test-suite test-unlist
   default-language: Haskell2010
@@ -253,7 +253,7 @@ test-suite test-unlist
     test-framework             >= 0.8  && < 0.9,
     test-framework-quickcheck2 >= 0.3  && < 0.4
   
-  ghc-options: -O2 -Wall -Wno-orphans
+  ghc-options: -Wall -Wno-orphans
 
 ---   ______ _____ _   _ _____  _   _ ___  ___  ___  ______ _   __ _____     ---
 ---   | ___ \  ___| \ | /  __ \| | | ||  \/  | / _ \ | ___ \ | / //  ___|    ---

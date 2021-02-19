@@ -9,18 +9,11 @@
 -}
 module Test.SDP.Indexed
 (
-  -- * Test type synonyms
-  TestIndexed2,
-  TestIndexed1,
-  TestIndexed,
+  -- * Indexed test
+  TestIndexed, TestIndexed1, TestIndexed2, indexedTest,
   
-  -- * Default test
-  indexedTest,
-  
-  -- * Particular tests
-  basicIndexedTest,
-  assocIndexedTest,
-  readIndexedTest
+  -- ** Particular tests
+  basicIndexedTest, assocIndexedTest, readIndexedTest
 )
 where
 
@@ -42,6 +35,8 @@ type TestIndexed1 l i e = i -> l e -> Bool
 
 -- | TestIndexed2 is service type synonym for more comfortable quickCheck using.
 type TestIndexed2 l i e = i -> l i e -> Bool
+
+--------------------------------------------------------------------------------
 
 -- | 'basicIndexedTest' checks relations of 'isNull', 'safeElem' and 'inRange'.
 basicIndexedTest :: (Bordered l i, Indexed l i e) => i -> l -> Bool

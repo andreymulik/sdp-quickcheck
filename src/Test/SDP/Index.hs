@@ -11,20 +11,14 @@
 -}
 module Test.SDP.Index
 (
-  -- * Default Shape test
+  -- * Shape test
   TestShape, shapeTest,
   
-  -- * Default Index test
+  -- * Index test
   TestIndex, indexTest,
   
   -- ** Particular tests
-  basicIndexTest,
-  inBoundsTest,
-  rangeTest,
-  prevTest,
-  nextTest,
-  
-  dumbSizeTest
+  basicIndexTest, inBoundsTest, rangeTest, prevTest, nextTest, dumbSizeTest
 )
 where
 
@@ -130,6 +124,7 @@ indexTest bnds i = and
     prevTest       bnds,
     nextTest       bnds
   ]
+
 
 
 

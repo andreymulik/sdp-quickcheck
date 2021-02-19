@@ -9,19 +9,11 @@
 -}
 module Test.SDP.Set
 (
-  -- * Test type synonyms
-  TestSet1,
-  TestSet,
-  
-  -- * Default test
-  setTest,
+  -- * Set test
+  TestSet, TestSet1, setTest,
   
   -- * Particular tests
-  insdelSetTest,
-  lookupSetTest,
-  basicSetTest,
-  unintSetTest,
-  diffSetTest,
+  basicSetTest, insdelSetTest, lookupSetTest, unintSetTest, diffSetTest,
   elemSetTest
 )
 where
@@ -40,6 +32,8 @@ type TestSet  s o = o -> s -> s -> Bool
 
 -- | TestSet1 is service type synonym for more comfortable quickCheck using.
 type TestSet1 s o = o -> s o -> s o -> Bool
+
+--------------------------------------------------------------------------------
 
 {- |
   'basicSetTest' checks relations of 'set', ('/?\') and ('\?/').
@@ -150,6 +144,7 @@ setTest e xs ys = and
   where
     sx = set xs
     sy = set ys
+
 
 
 

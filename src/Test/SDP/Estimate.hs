@@ -4,16 +4,13 @@
     License     :  BSD-style
     Maintainer  :  work.a.mulik@gmail.com
     Portability :  non-portable (requires non-portable modules)
-  
-  @Test.SDP.Estimate@ provides basic test suite for 'Estimate' instances.
+    
+    @Test.SDP.Estimate@ provides basic test suite for 'Estimate' instances.
 -}
 module Test.SDP.Estimate
   (
-    -- * Test type synonym
-    TestEstimate,
-    
-    -- * Default test
-    estimateTest
+    -- * Estimate test
+    TestEstimate, estimateTest
   )
 where
 
@@ -27,6 +24,8 @@ default ()
 
 -- | TestEstimate is service type synonym for more comfortable quickCheck using.
 type TestEstimate e = Int -> e -> e -> Bool
+
+--------------------------------------------------------------------------------
 
 -- | 'estimateTest' is basic test suite for 'Estimate' instances.
 estimateTest :: (Bordered b i) => Int -> b -> b -> Bool
@@ -73,8 +72,9 @@ estimateTest n xs ys = and
     ge1 = xs .>=. ys; le1 = xs .<=. ys
     eq1 = xs .==. ys; ne1 = xs ./=. ys
     cmp = xs <==> ys
-    
-    sx = sizeOf xs
-    sy = sizeOf ys
+    sx  = sizeOf  xs
+    sy  = sizeOf  ys
+
+
 
 

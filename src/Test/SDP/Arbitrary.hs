@@ -8,7 +8,7 @@
     Portability :  non-portable (GHC extensions)
     
     @Test.SDP.Arbitrary@ is service module that provides 'Arbitrary' instances
-    for SDP structures.
+    for @sdp@ structures.
 -}
 module Test.SDP.Arbitrary
 (
@@ -23,13 +23,12 @@ import Prelude ()
 import SDP.SafePrelude
 import SDP.Unboxed
 
-import Test.QuickCheck
-
+import SDP.Templates.AnyBorder
+import SDP.Templates.AnyChunks
 import SDP.Prim.SArray
 import SDP.Prim.SBytes
 
-import SDP.Templates.AnyBorder
-import SDP.Templates.AnyChunks
+import Test.QuickCheck
 
 default ()
 
@@ -55,11 +54,6 @@ instance (Unboxed e, Arbitrary e) => Arbitrary (SBytes# e)
 
 -- TODO: rewrite as arbitrary chunk list generator (needs sdp improvements).
 
-{-
-instance (Arbitrary (rep e)) => Arbitrary (AnyChunks rep e)
-  where
-    arbitrary = AnyChunks <$> arbitrary
--}
 instance (Bordered1 rep Int e, Linear1 rep e, Arbitrary e) => Arbitrary (AnyChunks rep e)
   where
     arbitrary = fromList <$> arbitrary
@@ -67,4 +61,5 @@ instance (Bordered1 rep Int e, Linear1 rep e, Arbitrary e) => Arbitrary (AnyChun
 instance (Index i, Bordered1 rep Int e, Arbitrary (rep e)) => Arbitrary (AnyBorder rep i e)
   where
     arbitrary = (\ es -> uncurry AnyBorder (defaultBounds $ sizeOf es) es) <$> arbitrary
+
 

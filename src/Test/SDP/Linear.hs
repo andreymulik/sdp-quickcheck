@@ -13,12 +13,8 @@ module Test.SDP.Linear
   TestLinear, TestLinear1, TestLinear2, linearTest,
   
   -- ** Particular tests
-  deconstructionLinearTest,
-  constructionLinearTest,
-  basicLinearTest,
-  replicateTest,
-  reverseTest,
-  concatTest
+  deconstructionLinearTest, constructionLinearTest, basicLinearTest,
+  replicateTest, reverseTest, concatTest
 )
 where
 
@@ -38,6 +34,8 @@ type TestLinear1 f e = Int -> e -> f e -> Bool
 
 -- | 'TestLinear2' is service type synonym for more comfortable quickCheck using.
 type TestLinear2 f i e = Int -> e -> f i e -> Bool
+
+--------------------------------------------------------------------------------
 
 {- |
   'basicLinearTest' checks relations of 'isNull', 'lzero', 'single' and
@@ -126,5 +124,7 @@ linearTest n e line = and
     reverseTest line,
     concatTest line
   ]
+
+
 
 

@@ -5,17 +5,15 @@
     Maintainer  :  work.a.mulik@gmail.com
     Portability :  portable
     
-    @Test.SDP.Split@ is service module that provides 'Split' tests for SDP
-    structures.
+    @Test.SDP.Split@ is service module that provides 'Split' tests.
 -}
 module Test.SDP.Split
 (
-  -- * Default Split test
+  -- * Split test
   TestSplit, TestSplit1, TestSplit2, splitTest,
   
   -- ** Particular tests
-  basicSplitTest,
-  whileSplitTest
+  basicSplitTest, whileSplitTest
 )
 where
 
@@ -102,4 +100,6 @@ whileSplitTest f xs = and
     dx = dropWhile f xs; dy = dropWhile f ys; ndx = dropWhile (not . f) xs
     sx = dropEnd   f xs; sy = dropEnd   f ys; nsx = dropEnd   (not . f) xs
     kx = takeEnd   f xs; ky = takeEnd   f ys; nkx = takeEnd   (not . f) xs
+
+
 
