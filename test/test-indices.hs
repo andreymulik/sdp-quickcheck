@@ -64,7 +64,12 @@ testIndexInt32 =  indexTest
 {- Word properties. -}
 
 testIndexWord   :: TestIndex Word
-testIndexWord   =  indexTest
+testIndexWord   =
+  let maxInt = toEnum maxBound :: Word
+  -- workaround for QuickCheck 2.11, in 2.12 works normally
+  -- note that instance Index Word have no bounds checks and throws exception
+  -- if Word is greater than (maxBound :: Int)
+  in  \ (l, u) i -> indexTest (min maxInt l, min maxInt u) (min maxInt i)
 
 testIndexWord8  :: TestIndex Word8
 testIndexWord8  =  indexTest

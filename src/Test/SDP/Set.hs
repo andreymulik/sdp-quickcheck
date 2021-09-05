@@ -40,7 +40,7 @@ type TestSet1 s o = o -> s o -> s o -> Bool
   Note that basicSetTest requires any @('Set' s o) => s@, not necessarily a set
   (may contain any data).
 -}
-basicSetTest :: (Set s o, Nullable s, Eq s, Ord o) => s -> Bool
+basicSetTest :: (Set s o, Eq s) => s -> Bool
 basicSetTest sx = and
     [
       isNull sx == isNull sx',
@@ -56,7 +56,7 @@ basicSetTest sx = and
   'insdelSetTest' checks rules of 'insert' and 'delete'.
   Note that 'insdelSetTest' requires a set, not any @('Set' s o) => s@.
 -}
-insdelSetTest :: (Set s o, Eq s, Ord o) => o -> s -> Bool
+insdelSetTest :: (Set s o, Eq s) => o -> s -> Bool
 insdelSetTest e sx' = and
   [
     (insert e sx' == sx') || not (member e sx'),
@@ -68,7 +68,7 @@ insdelSetTest e sx' = and
   Note that unintSetTest requires any @('Set' s o) => s@, not necessarily a set
   (may contain any data).
 -}
-unintSetTest :: (Set s o, Linear s o, Ord o) => s -> s -> Bool
+unintSetTest :: (Set s o, Linear s o, Eq o) => s -> s -> Bool
 unintSetTest sx' sy' = and
     [
       (is `isSubseqOf` sx') && (is  `isSubseqOf` sy') && (is `isSubseqOf` un),
@@ -99,7 +99,7 @@ diffSetTest sx' sy' = and
   Note that elemSetTest requires any @('Set' s o) => s@, not necessarily a set
   (may contain any data).
 -}
-elemSetTest :: (Set s o, Linear s o, Ord o) => o -> s -> Bool
+elemSetTest :: (Set s o, Linear s o, Eq o) => o -> s -> Bool
 elemSetTest e sx = and
     [
       (e' `isSubseqOf` sx) == member e sx',

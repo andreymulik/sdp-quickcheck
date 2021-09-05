@@ -38,6 +38,7 @@ instance Arbitrary E where arbitrary = return E
 
 instance (Arbitrary i, Arbitrary i') => Arbitrary (i' :& i)
   where
+    -- [internal]: QuickCheck-2.10 doesn't provide 'applyArbitrary2'
     arbitrary = liftA2 (:&) arbitrary arbitrary
 
 --------------------------------------------------------------------------------
@@ -61,5 +62,4 @@ instance (Bordered1 rep Int e, Linear1 rep e, Arbitrary e) => Arbitrary (AnyChun
 instance (Index i, Bordered1 rep Int e, Arbitrary (rep e)) => Arbitrary (AnyBorder rep i e)
   where
     arbitrary = (\ es -> uncurry AnyBorder (defaultBounds $ sizeOf es) es) <$> arbitrary
-
 
