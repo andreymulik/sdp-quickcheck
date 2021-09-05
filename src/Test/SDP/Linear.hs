@@ -74,8 +74,8 @@ deconstructionLinearTest line = and
 constructionLinearTest :: (Linear l e, Eq l) => e -> l -> Bool
 constructionLinearTest e line = and
   [
-    toHead e line == fromList (e  :  listL  line),
     toLast line e == fromList (listL line ++ [e]),
+    toHead e line == fromList (e : listL line),
     
     not . isNull $ toHead e line,
     not . isNull $ toLast line e

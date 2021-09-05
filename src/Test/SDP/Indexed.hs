@@ -49,15 +49,15 @@ basicIndexedTest i es = let bnds = bounds es in isNull es || inRange bnds (safeE
 assocIndexedTest :: (Bordered l i, Indexed l i e, Eq e, Eq l) => i -> l -> Bool
 assocIndexedTest i es = and
   [
-    assoc (bounds es) (assocs es) == es,
+    assoc bnds (assocs es) == es,
     
     es // (assocs es) == es,
     Z  // (assocs es) == es,
     es //     []      == es,
     
     -- if structure contain dublicates, (.$) may find earlier match.
-    isNull es || i' >= fromJust ((== es ! i') .$ es),
-    isNull es || elem i' ((== es!safeElem bnds i) *$ es)
+    isNull es || i' >= fromJust ((== es!i') .$ es),
+    isNull es || elem i' ((== es!i') *$ es)
   ]
   where
     i'   = safeElem bnds i
@@ -67,11 +67,9 @@ assocIndexedTest i es = and
 readIndexedTest :: (Bordered l i, Indexed l i e, Eq e) => i -> l -> Bool
 readIndexedTest i es = and
     [
-      -- just check (.!) on all range
       fmap (es .!) (indices es) == listL es,
-      isNull es || (es ! i' == es .! i'),
-      
       inRange bnds i || isNothing (es !? i),
+      isNull es || (es ! i' == es .! i'),
       isNull es || isJust (es !? i')
     ]
   where
@@ -86,5 +84,7 @@ indexedTest i es = and
     assocIndexedTest i es,
     readIndexedTest  i es
   ]
+
+
 
 
