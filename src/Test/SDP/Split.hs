@@ -40,7 +40,7 @@ type TestSplit2 s i e = Int -> s i e -> Bool
   @'splitTest' f n xs@ is default 'Split' test, where @f@ is arbitrary predicate
   (e.g. "Test.SDP.Gen.orderA").
 -}
-splitTest :: (Split s e, Eq e, Eq s, Bordered s i) => (e -> Bool) -> TestSplit s
+splitTest :: (Linear s e, Eq e, Eq s, Bordered s i) => (e -> Bool) -> TestSplit s
 splitTest f n xs = and
   [
     basicSplitTest n xs,
@@ -51,7 +51,7 @@ splitTest f n xs = and
   'basicSplitTest' checks 'take', 'drop', 'sans', 'keep', 'split' and 'divide'
   correctness and relations.
 -}
-basicSplitTest :: (Split s e, Eq e, Eq s, Bordered s i) => TestSplit s
+basicSplitTest :: (Linear s e, Eq e, Eq s, Bordered s i) => TestSplit s
 basicSplitTest n xs = and
     [
       split  n xs == (tx, dx),
@@ -77,7 +77,7 @@ basicSplitTest n xs = and
   'whileSplitTest' checks 'takeWhile', 'dropWhile', 'takeEnd', 'dropEnd',
   'spanl', 'spanr', 'breakl' and 'breakr' correctness and relations.
 -}
-whileSplitTest :: (Split s e, Eq e, Eq s, Bordered s i) => (e -> Bool) -> s -> Bool
+whileSplitTest :: (Linear s e, Eq e, Eq s, Bordered s i) => (e -> Bool) -> s -> Bool
 whileSplitTest f xs = and
     [
       spanl f xs == (tx, dx), breakl f xs == (ntx, ndx),
