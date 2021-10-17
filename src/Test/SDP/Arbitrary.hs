@@ -38,7 +38,7 @@ instance Arbitrary E where arbitrary = return E
 
 instance (Arbitrary i, Arbitrary i') => Arbitrary (i' :& i)
   where
-    arbitrary = applyArbitrary2 (:&)
+    arbitrary = liftA2 (:&) arbitrary arbitrary
 
 --------------------------------------------------------------------------------
 
