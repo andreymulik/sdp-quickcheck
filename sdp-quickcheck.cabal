@@ -305,6 +305,6 @@ benchmark bench-sort-io
     sdp          >= 0.2 && < 0.3,
     sdp-deepseq  >= 0.2 && <   1,
     criterion    >= 1.5 && < 1.6,
-    ghc-prim     >= 0.5 && < 0.7,
     QuickCheck   >= 2.8 && <   3
+
 
