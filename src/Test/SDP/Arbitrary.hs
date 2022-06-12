@@ -1,4 +1,4 @@
-{-# LANGUAGE MagicHash, TypeOperators, UndecidableInstances #-}
+{-# LANGUAGE MagicHash, TypeOperators, FlexibleContexts, UndecidableInstances #-}
 
 {- |
     Module      :  Test.SDP.Arbitrary

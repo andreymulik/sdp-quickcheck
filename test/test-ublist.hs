@@ -13,7 +13,7 @@ default ()
 --------------------------------------------------------------------------------
 
 main :: IO ()
-main = defaultMain
+main =  defaultMain
   [
     -- common tests
     testProperty "ublist-eq             " eqProp,
