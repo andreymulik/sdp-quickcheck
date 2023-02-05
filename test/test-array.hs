@@ -13,76 +13,98 @@ default ()
 --------------------------------------------------------------------------------
 
 main :: IO ()
-main = defaultMain
+main =  defaultMain
   [
-    -- common tests
-    testProperty "array-eq             " eqProp,
-    testProperty "array-ord            " ordProp,
-    testProperty "array-lexicographic  " lgoProp,
+    -- Eq tests
+    testProperty "array-eq-consistency   " eqConsistencyProp,
+    testProperty "array-eq-transitive    " eqTransitiveProp,
+    testProperty "array-eq-symmetric     " eqSymmetricProp,
+    testProperty "array-eq-reflexive     " eqReflexiveProp,
+    
+    -- Ord tests
+    testProperty "array-ord-antisymmetry " ordAntisymmetryProp,
+    testProperty "array-ord-transitive   " ordTransitiveProp,
+    testProperty "array-ord-totality     " ordTotalityProp,
+    testProperty "array-lexicographic    " lexicographicOrdProp,
     
     -- linear tests
-    testProperty "array-linear-basic   " basicLinearProp,
-    testProperty "array-linear-decons  " deconstructionLinearProp,
-    testProperty "array-linear-cons    " constructionLinearProp,
-    testProperty "array-linear-reverse " reverseProp,
-    testProperty "array-linear-concat  " concatProp,
+    testProperty "array-linear-basic     " basicLinearProp,
+    testProperty "array-linear-decons    " deconstructionLinearProp,
+    testProperty "array-linear-cons      " constructionLinearProp,
+    testProperty "array-linear-reverse   " reverseProp,
+    testProperty "array-linear-concat    " concatProp,
     
     -- split test
-    testProperty "array-split          " splitProp,
+    testProperty "array-split            " splitProp,
     
     -- indexed tests
-    testProperty "array-indexed-basic  " basicIndexedProp,
-    testProperty "array-indexed-assoc  " assocIndexedProp,
-    testProperty "array-indexed-read   " readIndexedProp,
+    testProperty "array-indexed-basic    " basicIndexedProp,
+    testProperty "array-indexed-assoc    " assocIndexedProp,
+    testProperty "array-indexed-read     " readIndexedProp,
     
     -- sort test
-    testProperty "array-sort           " sortProp,
+    testProperty "array-sort             " sortProp,
     
     -- set test
-    testProperty "array-set            " setProp,
+    testProperty "array-set              " setProp,
     
     -- estimate test
-    testProperty "array-estimate       " estimateProp
+    testProperty "array-estimate         " estimateProp
   ]
 
 --------------------------------------------------------------------------------
 
 {- Eq property. -}
 
-eqProp :: TestEq (Array Int Int)
-eqProp =  eqTest
+eqConsistencyProp :: Array Int Int -> Array Int Int -> Bool
+eqConsistencyProp =  eqConsistencyTest
+
+eqTransitiveProp :: Array Int Int -> Array Int Int -> Array Int Int -> Bool
+eqTransitiveProp =  eqTransitiveTest
+
+eqSymmetricProp :: Array Int Int -> Array Int Int -> Bool
+eqSymmetricProp =  eqSymmetricTest
+
+eqReflexiveProp :: Array Int Int -> Bool
+eqReflexiveProp =  eqReflexiveTest
 
 --------------------------------------------------------------------------------
 
 {- Ord property. -}
 
-ordProp :: TestOrd (Array Int Int)
-ordProp =  ordTest
+ordAntisymmetryProp :: Array Int Int -> Array Int Int -> Bool
+ordAntisymmetryProp =  ordAntisymmetryTest
 
-lgoProp :: Long (Array Int Int) -> Long (Array Int Int) -> Bool
-lgoProp (Long xs) (Long ys) = lexicographicOrdTest xs ys
+ordTransitiveProp :: Array Int Int -> Array Int Int -> Array Int Int -> Bool
+ordTransitiveProp =  ordTransitiveTest
+
+ordTotalityProp :: Array Int Int -> Array Int Int -> Bool
+ordTotalityProp =  ordTotalityTest
+
+lexicographicOrdProp :: Long (Array Int Int) -> Long (Array Int Int) -> Bool
+lexicographicOrdProp (Long xs) (Long ys) = lexicographicOrdTest xs ys
 
 --------------------------------------------------------------------------------
 
 {- Linear properties. -}
 
-basicLinearProp          :: Char -> Array Int Char -> Bool
-basicLinearProp          =  basicLinearTest
+basicLinearProp :: Char -> Array Int Char -> Bool
+basicLinearProp =  basicLinearTest
 
 deconstructionLinearProp :: Array Int Char -> Bool
 deconstructionLinearProp =  deconstructionLinearTest
 
-constructionLinearProp   :: Char -> Array Int Char -> Bool
-constructionLinearProp   =  constructionLinearTest
+constructionLinearProp :: Char -> Array Int Char -> Bool
+constructionLinearProp =  constructionLinearTest
 
-reverseProp              :: Array Int Char -> Bool
-reverseProp              =  reverseTest
+reverseProp :: Array Int Char -> Bool
+reverseProp =  reverseTest
 
-replicateProp            :: TestLinear2 Array Int Char
-replicateProp            =  replicateTest
+replicateProp :: TestLinear2 Array Int Char
+replicateProp =  replicateTest
 
-concatProp               :: Array Int Char -> Bool
-concatProp               =  concatTest
+concatProp :: Array Int Char -> Bool
+concatProp =  concatTest
 
 --------------------------------------------------------------------------------
 
@@ -124,7 +146,5 @@ setProp =  setTest
 
 estimateProp :: TestEstimate (Array Int Int)
 estimateProp =  estimateTest
-
-
 
 

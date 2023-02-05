@@ -15,74 +15,96 @@ default ()
 main :: IO ()
 main =  defaultMain
   [
-    -- common tests
-    testProperty "ublist-eq             " eqProp,
-    testProperty "ublist-ord            " ordProp,
-    testProperty "ublist-lexicographic  " lgoProp,
+    -- Eq tests
+    testProperty "ublist-eq-consistency   " eqConsistencyProp,
+    testProperty "ublist-eq-transitive    " eqTransitiveProp,
+    testProperty "ublist-eq-symmetric     " eqSymmetricProp,
+    testProperty "ublist-eq-reflexive     " eqReflexiveProp,
+    
+    -- Ord tests
+    testProperty "ublist-ord-antisymmetry " ordAntisymmetryProp,
+    testProperty "ublist-ord-transitive   " ordTransitiveProp,
+    testProperty "ublist-ord-totality     " ordTotalityProp,
+    testProperty "ublist-lexicographic    " lexicographicOrdProp,
     
     -- linear tests
-    testProperty "ublist-linear-basic   " basicLinearProp,
-    testProperty "ublist-linear-decons  " deconstructionLinearProp,
-    testProperty "ublist-linear-cons    " constructionLinearProp,
-    testProperty "ublist-linear-reverse " reverseProp,
-    testProperty "ublist-linear-concat  " concatProp,
+    testProperty "ublist-linear-basic     " basicLinearProp,
+    testProperty "ublist-linear-decons    " deconstructionLinearProp,
+    testProperty "ublist-linear-cons      " constructionLinearProp,
+    testProperty "ublist-linear-reverse   " reverseProp,
+    testProperty "ublist-linear-concat    " concatProp,
     
     -- split test
-    testProperty "ublist-split          " splitProp,
+    testProperty "ublist-split            " splitProp,
     
     -- indexed tests
-    testProperty "ublist-indexed-basic  " basicIndexedProp,
-    testProperty "ublist-indexed-assoc  " assocIndexedProp,
-    testProperty "ublist-indexed-read   " readIndexedProp,
+    testProperty "ublist-indexed-basic    " basicIndexedProp,
+    testProperty "ublist-indexed-assoc    " assocIndexedProp,
+    testProperty "ublist-indexed-read     " readIndexedProp,
     
     -- sort test
-    testProperty "ublist-sort           " sortProp,
+    testProperty "ublist-sort             " sortProp,
     
     -- set test
-    testProperty "ublist-set            " setProp,
+    testProperty "ublist-set              " setProp,
     
     -- estimate test
-    testProperty "ublist-estimate       " estimateProp
+    testProperty "ublist-estimate         " estimateProp
   ]
 
 --------------------------------------------------------------------------------
 
 {- Eq property. -}
 
-eqProp :: TestEq (Ublist Int)
-eqProp =  eqTest
+eqConsistencyProp :: Ublist Int -> Ublist Int -> Bool
+eqConsistencyProp =  eqConsistencyTest
+
+eqTransitiveProp :: Ublist Int -> Ublist Int -> Ublist Int -> Bool
+eqTransitiveProp =  eqTransitiveTest
+
+eqSymmetricProp :: Ublist Int -> Ublist Int -> Bool
+eqSymmetricProp =  eqSymmetricTest
+
+eqReflexiveProp :: Ublist Int -> Bool
+eqReflexiveProp =  eqReflexiveTest
 
 --------------------------------------------------------------------------------
 
 {- Ord property. -}
 
-ordProp :: TestOrd (Ublist Int)
-ordProp =  ordTest
+ordAntisymmetryProp :: Ublist Int -> Ublist Int -> Bool
+ordAntisymmetryProp =  ordAntisymmetryTest
 
-lgoProp :: Long (Ublist Int) -> Long (Ublist Int) -> Bool
-lgoProp (Long xs) (Long ys) = lexicographicOrdTest xs ys
+ordTransitiveProp :: Ublist Int -> Ublist Int -> Ublist Int -> Bool
+ordTransitiveProp =  ordTransitiveTest
+
+ordTotalityProp :: Ublist Int -> Ublist Int -> Bool
+ordTotalityProp =  ordTotalityTest
+
+lexicographicOrdProp :: Long (Ublist Int) -> Long (Ublist Int) -> Bool
+lexicographicOrdProp (Long xs) (Long ys) = lexicographicOrdTest xs ys
 
 --------------------------------------------------------------------------------
 
 {- Linear properties. -}
 
-basicLinearProp          :: Char -> Ublist Char -> Bool
-basicLinearProp          =  basicLinearTest
+basicLinearProp :: Char -> Ublist Char -> Bool
+basicLinearProp =  basicLinearTest
 
 deconstructionLinearProp :: Ublist Char -> Bool
 deconstructionLinearProp =  deconstructionLinearTest
 
-constructionLinearProp   :: Char -> Ublist Char -> Bool
-constructionLinearProp   =  constructionLinearTest
+constructionLinearProp :: Char -> Ublist Char -> Bool
+constructionLinearProp =  constructionLinearTest
 
-reverseProp              :: Ublist Char -> Bool
-reverseProp              =  reverseTest
+reverseProp :: Ublist Char -> Bool
+reverseProp =  reverseTest
 
-replicateProp            :: TestLinear1 Ublist Char
-replicateProp            =  replicateTest
+replicateProp :: TestLinear1 Ublist Char
+replicateProp =  replicateTest
 
-concatProp               :: Ublist Char -> Bool
-concatProp               =  concatTest
+concatProp :: Ublist Char -> Bool
+concatProp =  concatTest
 
 --------------------------------------------------------------------------------
 
@@ -124,7 +146,5 @@ setProp =  setTest
 
 estimateProp :: TestEstimate (Ublist Int)
 estimateProp =  estimateTest
-
-
 
 

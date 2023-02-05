@@ -13,76 +13,99 @@ default ()
 --------------------------------------------------------------------------------
 
 main :: IO ()
-main = defaultMain
+main =  defaultMain
   [
-    -- common tests
-    testProperty "unrolled-eq             " eqProp,
-    testProperty "unrolled-ord            " ordProp,
-    testProperty "unrolled-lexicographic  " lgoProp,
+    -- Eq tests
+    testProperty "unrolled-eq-consistency   " eqConsistencyProp,
+    testProperty "unrolled-eq-transitive    " eqTransitiveProp,
+    testProperty "unrolled-eq-symmetric     " eqSymmetricProp,
+    testProperty "unrolled-eq-reflexive     " eqReflexiveProp,
+    
+    -- Ord tests
+    testProperty "unrolled-ord-antisymmetry " ordAntisymmetryProp,
+    testProperty "unrolled-ord-transitive   " ordTransitiveProp,
+    testProperty "unrolled-ord-totality     " ordTotalityProp,
+    testProperty "unrolled-lexicographic    " lexicographicOrdProp,
     
     -- linear tests
-    testProperty "unrolled-linear-basic   " basicLinearProp,
-    testProperty "unrolled-linear-decons  " deconstructionLinearProp,
-    testProperty "unrolled-linear-cons    " constructionLinearProp,
-    testProperty "unrolled-linear-reverse " reverseProp,
-    testProperty "unrolled-linear-concat  " concatProp,
+    testProperty "unrolled-linear-basic     " basicLinearProp,
+    testProperty "unrolled-linear-decons    " deconstructionLinearProp,
+    testProperty "unrolled-linear-cons      " constructionLinearProp,
+    testProperty "unrolled-linear-reverse   " reverseProp,
+    testProperty "unrolled-linear-concat    " concatProp,
     
     -- split test
-    testProperty "unrolled-split          " splitProp,
+    testProperty "unrolled-split            " splitProp,
     
     -- indexed tests
-    testProperty "unrolled-indexed-basic  " basicIndexedProp,
-    testProperty "unrolled-indexed-assoc  " assocIndexedProp,
-    testProperty "unrolled-indexed-read   " readIndexedProp,
+    testProperty "unrolled-indexed-basic    " basicIndexedProp,
+    testProperty "unrolled-indexed-assoc    " assocIndexedProp,
+    testProperty "unrolled-indexed-read     " readIndexedProp,
     
     -- sort test
-    testProperty "unrolled-sort           " sortProp,
+    testProperty "unrolled-sort             " sortProp,
     
     -- set test
-    testProperty "unrolled-set            " setProp,
+    testProperty "unrolled-set              " setProp,
     
     -- estimate test
-    testProperty "unrolled-estimate       " estimateProp
+    testProperty "unrolled-estimate         " estimateProp
   ]
 
 --------------------------------------------------------------------------------
 
 {- Eq property. -}
 
-eqProp :: TestEq (Unrolled Int Int)
-eqProp =  eqTest
+eqConsistencyProp :: Unrolled Int Int -> Unrolled Int Int -> Bool
+eqConsistencyProp =  eqConsistencyTest
+
+eqTransitiveProp :: Unrolled Int Int -> Unrolled Int Int
+                 -> Unrolled Int Int -> Bool
+eqTransitiveProp =  eqTransitiveTest
+
+eqSymmetricProp :: Unrolled Int Int -> Unrolled Int Int -> Bool
+eqSymmetricProp =  eqSymmetricTest
+
+eqReflexiveProp :: Unrolled Int Int -> Bool
+eqReflexiveProp =  eqReflexiveTest
 
 --------------------------------------------------------------------------------
 
 {- Ord property. -}
 
-ordProp :: TestOrd (Unrolled Int Int)
-ordProp =  ordTest
+ordAntisymmetryProp :: Unrolled Int Int -> Unrolled Int Int -> Bool
+ordAntisymmetryProp =  ordAntisymmetryTest
 
-lgoProp :: Long (Unrolled Int Int) -> Long (Unrolled Int Int) -> Bool
-lgoProp (Long xs) (Long ys) = lexicographicOrdTest xs ys
+ordTransitiveProp :: Unrolled Int Int -> Unrolled Int Int -> Unrolled Int Int -> Bool
+ordTransitiveProp =  ordTransitiveTest
+
+ordTotalityProp :: Unrolled Int Int -> Unrolled Int Int -> Bool
+ordTotalityProp =  ordTotalityTest
+
+lexicographicOrdProp :: Long (Unrolled Int Int) -> Long (Unrolled Int Int) -> Bool
+lexicographicOrdProp (Long xs) (Long ys) = lexicographicOrdTest xs ys
 
 --------------------------------------------------------------------------------
 
 {- Linear properties. -}
 
-basicLinearProp          :: Char -> Unrolled Int Char -> Bool
-basicLinearProp          =  basicLinearTest
+basicLinearProp :: Char -> Unrolled Int Char -> Bool
+basicLinearProp =  basicLinearTest
 
 deconstructionLinearProp :: Unrolled Int Char -> Bool
 deconstructionLinearProp =  deconstructionLinearTest
 
-constructionLinearProp   :: Char -> Unrolled Int Char -> Bool
-constructionLinearProp   =  constructionLinearTest
+constructionLinearProp :: Char -> Unrolled Int Char -> Bool
+constructionLinearProp =  constructionLinearTest
 
-reverseProp              :: Unrolled Int Char -> Bool
-reverseProp              =  reverseTest
+reverseProp :: Unrolled Int Char -> Bool
+reverseProp =  reverseTest
 
-replicateProp            :: TestLinear2 Unrolled Int Char
-replicateProp            =  replicateTest
+replicateProp :: TestLinear2 Unrolled Int Char
+replicateProp =  replicateTest
 
-concatProp               :: Unrolled Int Char -> Bool
-concatProp               =  concatTest
+concatProp :: Unrolled Int Char -> Bool
+concatProp =  concatTest
 
 --------------------------------------------------------------------------------
 
@@ -124,7 +147,4 @@ setProp =  setTest
 
 estimateProp :: TestEstimate (Unrolled Int Int)
 estimateProp =  estimateTest
-
-
-
 

@@ -15,74 +15,97 @@ default ()
 main :: IO ()
 main =  defaultMain
   [
-    -- common tests
-    testProperty "bytelist-eq             " eqProp,
-    testProperty "bytelist-ord            " ordProp,
-    testProperty "bytelist-lexicographic  " lgoProp,
+    -- Eq tests
+    testProperty "bytelist-eq-consistency   " eqConsistencyProp,
+    testProperty "bytelist-eq-transitive    " eqTransitiveProp,
+    testProperty "bytelist-eq-symmetric     " eqSymmetricProp,
+    testProperty "bytelist-eq-reflexive     " eqReflexiveProp,
+    
+    -- Ord tests
+    testProperty "bytelist-ord-antisymmetry " ordAntisymmetryProp,
+    testProperty "bytelist-ord-transitive   " ordTransitiveProp,
+    testProperty "bytelist-ord-totality     " ordTotalityProp,
+    testProperty "bytelist-lexicographic    " lexicographicOrdProp,
     
     -- linear tests
-    testProperty "bytelist-linear-basic   " basicLinearProp,
-    testProperty "bytelist-linear-decons  " deconstructionLinearProp,
-    testProperty "bytelist-linear-cons    " constructionLinearProp,
-    testProperty "bytelist-linear-reverse " reverseProp,
-    testProperty "bytelist-linear-concat  " concatProp,
+    testProperty "bytelist-linear-basic     " basicLinearProp,
+    testProperty "bytelist-linear-decons    " deconstructionLinearProp,
+    testProperty "bytelist-linear-cons      " constructionLinearProp,
+    testProperty "bytelist-linear-reverse   " reverseProp,
+    testProperty "bytelist-linear-concat    " concatProp,
     
     -- split test
-    testProperty "bytelist-split          " splitProp,
+    testProperty "bytelist-split            " splitProp,
     
     -- indexed tests
-    testProperty "bytelist-indexed-basic  " basicIndexedProp,
-    testProperty "bytelist-indexed-assoc  " assocIndexedProp,
-    testProperty "bytelist-indexed-read   " readIndexedProp,
+    testProperty "bytelist-indexed-basic    " basicIndexedProp,
+    testProperty "bytelist-indexed-assoc    " assocIndexedProp,
+    testProperty "bytelist-indexed-read     " readIndexedProp,
     
     -- sort test
-    testProperty "bytelist-sort           " sortProp,
+    testProperty "bytelist-sort             " sortProp,
     
     -- set test
-    testProperty "bytelist-set            " setProp,
+    testProperty "bytelist-set              " setProp,
     
     -- estimate test
-    testProperty "bytelist-estimate       " estimateProp
+    testProperty "bytelist-estimate         " estimateProp
   ]
 
 --------------------------------------------------------------------------------
 
 {- Eq property. -}
 
-eqProp :: TestEq (ByteList Int Int)
-eqProp =  eqTest
+eqConsistencyProp :: ByteList Int Int -> ByteList Int Int -> Bool
+eqConsistencyProp =  eqConsistencyTest
+
+eqTransitiveProp :: ByteList Int Int -> ByteList Int Int
+                 -> ByteList Int Int -> Bool
+eqTransitiveProp =  eqTransitiveTest
+
+eqSymmetricProp :: ByteList Int Int -> ByteList Int Int -> Bool
+eqSymmetricProp =  eqSymmetricTest
+
+eqReflexiveProp :: ByteList Int Int -> Bool
+eqReflexiveProp =  eqReflexiveTest
 
 --------------------------------------------------------------------------------
 
 {- Ord property. -}
 
-ordProp :: TestOrd (ByteList Int Int)
-ordProp =  ordTest
+ordAntisymmetryProp :: ByteList Int Int -> ByteList Int Int -> Bool
+ordAntisymmetryProp =  ordAntisymmetryTest
 
-lgoProp :: Long (ByteList Int Int) -> Long (ByteList Int Int) -> Bool
-lgoProp (Long xs) (Long ys) = lexicographicOrdTest xs ys
+ordTransitiveProp :: ByteList Int Int -> ByteList Int Int -> ByteList Int Int -> Bool
+ordTransitiveProp =  ordTransitiveTest
+
+ordTotalityProp :: ByteList Int Int -> ByteList Int Int -> Bool
+ordTotalityProp =  ordTotalityTest
+
+lexicographicOrdProp :: Long (ByteList Int Int) -> Long (ByteList Int Int) -> Bool
+lexicographicOrdProp (Long xs) (Long ys) = lexicographicOrdTest xs ys
 
 --------------------------------------------------------------------------------
 
 {- Linear properties. -}
 
-basicLinearProp          :: Char -> ByteList Int Char -> Bool
-basicLinearProp          =  basicLinearTest
+basicLinearProp :: Char -> ByteList Int Char -> Bool
+basicLinearProp =  basicLinearTest
 
 deconstructionLinearProp :: ByteList Int Char -> Bool
 deconstructionLinearProp =  deconstructionLinearTest
 
-constructionLinearProp   :: Char -> ByteList Int Char -> Bool
-constructionLinearProp   =  constructionLinearTest
+constructionLinearProp :: Char -> ByteList Int Char -> Bool
+constructionLinearProp =  constructionLinearTest
 
-reverseProp              :: ByteList Int Char -> Bool
-reverseProp              =  reverseTest
+reverseProp :: ByteList Int Char -> Bool
+reverseProp =  reverseTest
 
-replicateProp            :: TestLinear2 ByteList Int Char
-replicateProp            =  replicateTest
+replicateProp :: TestLinear2 ByteList Int Char
+replicateProp =  replicateTest
 
-concatProp               :: ByteList Int Char -> Bool
-concatProp               =  concatTest
+concatProp :: ByteList Int Char -> Bool
+concatProp =  concatTest
 
 --------------------------------------------------------------------------------
 
@@ -124,7 +147,4 @@ setProp =  setTest
 
 estimateProp :: TestEstimate (ByteList Int Int)
 estimateProp =  estimateTest
-
-
-
 

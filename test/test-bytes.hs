@@ -15,74 +15,96 @@ default ()
 main :: IO ()
 main =  defaultMain
   [
-    -- common tests
-    testProperty "bytes-eq             " eqProp,
-    testProperty "bytes-ord            " ordProp,
-    testProperty "bytes-lexicographic  " lgoProp,
+    -- Eq tests
+    testProperty "bytes-eq-consistency   " eqConsistencyProp,
+    testProperty "bytes-eq-transitive    " eqTransitiveProp,
+    testProperty "bytes-eq-symmetric     " eqSymmetricProp,
+    testProperty "bytes-eq-reflexive     " eqReflexiveProp,
+    
+    -- Ord tests
+    testProperty "bytes-ord-antisymmetry " ordAntisymmetryProp,
+    testProperty "bytes-ord-transitive   " ordTransitiveProp,
+    testProperty "bytes-ord-totality     " ordTotalityProp,
+    testProperty "bytes-lexicographic    " lexicographicOrdProp,
     
     -- linear tests
-    testProperty "bytes-linear-basic   " basicLinearProp,
-    testProperty "bytes-linear-decons  " deconstructionLinearProp,
-    testProperty "bytes-linear-cons    " constructionLinearProp,
-    testProperty "bytes-linear-reverse " reverseProp,
-    testProperty "bytes-linear-concat  " concatProp,
+    testProperty "bytes-linear-basic     " basicLinearProp,
+    testProperty "bytes-linear-decons    " deconstructionLinearProp,
+    testProperty "bytes-linear-cons      " constructionLinearProp,
+    testProperty "bytes-linear-reverse   " reverseProp,
+    testProperty "bytes-linear-concat    " concatProp,
     
     -- split test
-    testProperty "bytes-split          " splitProp,
+    testProperty "bytes-split            " splitProp,
     
     -- indexed tests
-    testProperty "bytes-indexed-basic  " basicIndexedProp,
-    testProperty "bytes-indexed-assoc  " assocIndexedProp,
-    testProperty "bytes-indexed-read   " readIndexedProp,
+    testProperty "bytes-indexed-basic    " basicIndexedProp,
+    testProperty "bytes-indexed-assoc    " assocIndexedProp,
+    testProperty "bytes-indexed-read     " readIndexedProp,
     
     -- sort test
-    testProperty "bytes-sort           " sortProp,
+    testProperty "bytes-sort             " sortProp,
     
     -- set test
-    testProperty "bytes-set            " setProp,
+    testProperty "bytes-set              " setProp,
     
     -- estimate test
-    testProperty "bytes-estimate       " estimateProp
+    testProperty "bytes-estimate         " estimateProp
   ]
 
 --------------------------------------------------------------------------------
 
 {- Eq property. -}
 
-eqProp :: TestEq (Bytes Int Int)
-eqProp =  eqTest
+eqConsistencyProp :: Bytes Int Int -> Bytes Int Int -> Bool
+eqConsistencyProp =  eqConsistencyTest
+
+eqTransitiveProp :: Bytes Int Int -> Bytes Int Int -> Bytes Int Int -> Bool
+eqTransitiveProp =  eqTransitiveTest
+
+eqSymmetricProp :: Bytes Int Int -> Bytes Int Int -> Bool
+eqSymmetricProp =  eqSymmetricTest
+
+eqReflexiveProp :: Bytes Int Int -> Bool
+eqReflexiveProp =  eqReflexiveTest
 
 --------------------------------------------------------------------------------
 
 {- Ord property. -}
 
-ordProp :: TestOrd (Bytes Int Int)
-ordProp =  ordTest
+ordAntisymmetryProp :: Bytes Int Int -> Bytes Int Int -> Bool
+ordAntisymmetryProp =  ordAntisymmetryTest
 
-lgoProp :: Long (Bytes Int Int) -> Long (Bytes Int Int) -> Bool
-lgoProp (Long xs) (Long ys) = lexicographicOrdTest xs ys
+ordTransitiveProp :: Bytes Int Int -> Bytes Int Int -> Bytes Int Int -> Bool
+ordTransitiveProp =  ordTransitiveTest
+
+ordTotalityProp :: Bytes Int Int -> Bytes Int Int -> Bool
+ordTotalityProp =  ordTotalityTest
+
+lexicographicOrdProp :: Long (Bytes Int Int) -> Long (Bytes Int Int) -> Bool
+lexicographicOrdProp (Long xs) (Long ys) = lexicographicOrdTest xs ys
 
 --------------------------------------------------------------------------------
 
 {- Linear properties. -}
 
-basicLinearProp          :: Char -> Bytes Int Char -> Bool
-basicLinearProp          =  basicLinearTest
+basicLinearProp :: Char -> Bytes Int Char -> Bool
+basicLinearProp =  basicLinearTest
 
 deconstructionLinearProp :: Bytes Int Char -> Bool
 deconstructionLinearProp =  deconstructionLinearTest
 
-constructionLinearProp   :: Char -> Bytes Int Char -> Bool
-constructionLinearProp   =  constructionLinearTest
+constructionLinearProp :: Char -> Bytes Int Char -> Bool
+constructionLinearProp =  constructionLinearTest
 
-reverseProp              :: Bytes Int Char -> Bool
-reverseProp              =  reverseTest
+reverseProp :: Bytes Int Char -> Bool
+reverseProp =  reverseTest
 
-replicateProp            :: TestLinear2 Bytes Int Char
-replicateProp            =  replicateTest
+replicateProp :: TestLinear2 Bytes Int Char
+replicateProp =  replicateTest
 
-concatProp               :: Bytes Int Char -> Bool
-concatProp               =  concatTest
+concatProp :: Bytes Int Char -> Bool
+concatProp =  concatTest
 
 --------------------------------------------------------------------------------
 
@@ -124,7 +146,5 @@ setProp =  setTest
 
 estimateProp :: TestEstimate (Bytes Int Int)
 estimateProp =  estimateTest
-
-
 
 
