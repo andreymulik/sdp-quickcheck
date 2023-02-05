@@ -49,6 +49,9 @@ Library
   
   ghc-options: -Wall -Wno-orphans
   
+  if impl(ghc >= 8.6)
+    cpp-options: -DSDP_QUICKCHECK_QUALIFIED_CONSTRAINTS
+  
   exposed-modules:
     Test.SDP.Arbitrary
     Test.SDP.Estimate
@@ -98,6 +101,9 @@ test-suite test-indices
     test-framework-quickcheck2 >= 0.3 && < 0.4
   
   ghc-options: -Wall -Wno-orphans
+  
+  if impl(ghc >= 8.6)
+    cpp-options: -DSDP_QUICKCHECK_QUALIFIED_CONSTRAINTS
 
 test-suite test-array
   default-language: Haskell2010
@@ -126,6 +132,9 @@ test-suite test-array
     test-framework-quickcheck2 >= 0.3 && < 0.4
   
   ghc-options: -Wall -Wno-orphans
+  
+  if impl(ghc >= 8.6)
+    cpp-options: -DSDP_QUICKCHECK_QUALIFIED_CONSTRAINTS
 
 test-suite test-bytes
   default-language: Haskell2010
@@ -154,6 +163,9 @@ test-suite test-bytes
     test-framework-quickcheck2 >= 0.3 && < 0.4
   
   ghc-options: -Wall -Wno-orphans
+  
+  if impl(ghc >= 8.6)
+    cpp-options: -DSDP_QUICKCHECK_QUALIFIED_CONSTRAINTS
 
 test-suite test-unrolled
   default-language: Haskell2010
@@ -182,6 +194,9 @@ test-suite test-unrolled
     test-framework-quickcheck2 >= 0.3 && < 0.4
   
   ghc-options: -Wall -Wno-orphans
+  
+  if impl(ghc >= 8.6)
+    cpp-options: -DSDP_QUICKCHECK_QUALIFIED_CONSTRAINTS
 
 test-suite test-bytelist
   default-language: Haskell2010
@@ -210,6 +225,9 @@ test-suite test-bytelist
     test-framework-quickcheck2 >= 0.3 && < 0.4
   
   ghc-options: -Wall -Wno-orphans
+  
+  if impl(ghc >= 8.6)
+    cpp-options: -DSDP_QUICKCHECK_QUALIFIED_CONSTRAINTS
 
 test-suite test-ublist
   default-language: Haskell2010
@@ -238,6 +256,9 @@ test-suite test-ublist
     test-framework-quickcheck2 >= 0.3 && < 0.4
   
   ghc-options: -Wall -Wno-orphans
+  
+  if impl(ghc >= 8.6)
+    cpp-options: -DSDP_QUICKCHECK_QUALIFIED_CONSTRAINTS
 
 test-suite test-unlist
   default-language: Haskell2010
@@ -266,6 +287,9 @@ test-suite test-unlist
     test-framework-quickcheck2 >= 0.3 && < 0.4
   
   ghc-options: -Wall -Wno-orphans
+  
+  if impl(ghc >= 8.6)
+    cpp-options: -DSDP_QUICKCHECK_QUALIFIED_CONSTRAINTS
 
 ---   ______ _____ _   _ _____  _   _ ___  ___  ___  ______ _   __ _____     ---
 ---   | ___ \  ___| \ | /  __ \| | | ||  \/  | / _ \ | ___ \ | / //  ___|    ---
@@ -280,19 +304,7 @@ benchmark bench-sort
   main-is:          bench-sort.hs
   type:             exitcode-stdio-1.0
   
-  other-modules:
-    Test.SDP.Arbitrary
-    Test.SDP.Estimate
-    Test.SDP.Indexed
-    Test.SDP.Linear
-    Test.SDP.Split
-    Test.SDP.Sort
-    Test.SDP.Set
-    Test.SDP.Gen
-    Test.SDP.Ord
-    Test.SDP.Eq
-    Test.SDP
-  
+  other-modules: Test.SDP.Gen
   build-depends:
     base        >= 4.9 && <   5,
     sdp         >= 0.3 && <   1,
@@ -301,6 +313,9 @@ benchmark bench-sort
     criterion   >= 1.5 && < 1.6
   
   ghc-options: -O2 -Wall -Wno-orphans
+  
+  if impl(ghc >= 8.6)
+    cpp-options: -DSDP_QUICKCHECK_QUALIFIED_CONSTRAINTS
 
 benchmark bench-sort-io
   default-language: Haskell2010
@@ -309,16 +324,16 @@ benchmark bench-sort-io
   main-is:          bench-sort-io.hs
   type:             exitcode-stdio-1.0
   
-  other-modules:
-    Test.SDP.Gen
-  
+  other-modules: Test.SDP.Gen
   build-depends:
     base         >= 4.9 && <   5,
     sdp          >= 0.3 && <   1,
     sdp-deepseq  >= 0.2 && <   1,
     criterion    >= 1.5 && < 1.6,
     QuickCheck   >= 2.8 && <   3
-
+  
+  if impl(ghc >= 8.6)
+    cpp-options: -DSDP_QUICKCHECK_QUALIFIED_CONSTRAINTS
 
 
 
